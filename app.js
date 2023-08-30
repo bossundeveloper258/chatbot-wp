@@ -25,7 +25,7 @@ const getUser = async (documentNumber) => {
   
   //Flujos
   
-  const flowPagoYape = addKeyword("1")
+  const flowPagoYape = addKeyword("yape")
     .addAnswer(
       "Ingrese Monto de Yapeo",
       { capture: true },
@@ -78,10 +78,7 @@ const getUser = async (documentNumber) => {
         "2- PAGO KASNET",
         "3- PAGOS CC. BCP",
         "4- PAGOS CC BANCO NACION",
-      ],
-      null,
-      null,
-      [flowPagoYape]
+      ]
     );
   
   const flowPrincipal = addKeyword([
@@ -123,7 +120,7 @@ const getUser = async (documentNumber) => {
 
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowPrincipal])
+    const adapterFlow = createFlow([flowPrincipal, flowPagoYape])
 
     const adapterProvider = createProvider(MetaProvider, {
         jwtToken: 'EAACbK7Q2cwABO6ZAWDr2QTeXeVavSZCtZANvneQxytTsem95TQj2eFaZCAMaIMPhdcl8ue1eKZBuma1iBXnSh8OimEe8CMqxmDGZBSHGsPudOZAvrmWPsoMSHEj3j3pGbRMDDcXiP4eCi1Ear3OmJySiYSsKP6z0W8np1O7yhrvfBP0ZASjUlEeylJAwEscVTKx9ggx4ZBYZCtzqpKKYhz4QQZD',
