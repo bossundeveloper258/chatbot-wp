@@ -31,7 +31,7 @@ const getUser = async (documentNumber) => {
       { capture: true },
       (ctx, { flowDynamic,fallBack }) => {
         if (isNaN(ctx.body)) return fallBack();
-        return flowDynamic([{body: "continua"}])
+        // return flowDynamic([{body: "continua"}])
       }
     )
     .addAnswer(
