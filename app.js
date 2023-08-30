@@ -1,7 +1,9 @@
 const { createBot, createProvider, createFlow, addKeyword } = require('@bot-whatsapp/bot')
 
 const MetaProvider = require('@bot-whatsapp/provider/meta')
-const MockAdapter = require('@bot-whatsapp/database/mock')
+const MockAdapter = require('@bot-whatsapp/database/mock');
+
+const { getUserByDocument } = require("./services/mikrowisp.service");
 
 /**
  * Aqui declaramos los flujos hijos, los flujos se declaran de atras para adelante, es decir que si tienes un flujo de este tipo:
@@ -15,117 +17,113 @@ const MockAdapter = require('@bot-whatsapp/database/mock')
  * Primero declaras los submenus 1.1 y 2.1, luego el 1 y 2 y al final el principal.
  */
 
-const flowSecundario = addKeyword(['2', 'siguiente']).addAnswer(['📄 Aquí tenemos el flujo secundario'])
-
-const flowDocs = addKeyword(['doc', 'documentacion', 'documentación']).addAnswer(
-    [
-        '📄 Aquí encontras las documentación recuerda que puedes mejorarla',
-        'https://bot-whatsapp.netlify.app/',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowTuto = addKeyword(['tutorial', 'tuto']).addAnswer(
-    [
-        '🙌 Aquí encontras un ejemplo rapido',
-        'https://bot-whatsapp.netlify.app/docs/example/',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowGracias = addKeyword(['gracias', 'grac']).addAnswer(
-    [
-        '🚀 Puedes aportar tu granito de arena a este proyecto',
-        '[*opencollective*] https://opencollective.com/bot-whatsapp',
-        '[*buymeacoffee*] https://www.buymeacoffee.com/leifermendez',
-        '[*patreon*] https://www.patreon.com/leifermendez',
-        '\n*2* Para siguiente paso.',
-    ],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowDiscord = addKeyword(['discord']).addAnswer(
-    ['🤪 Únete al discord', 'https://link.codigoencasa.com/DISCORD', '\n*2* Para siguiente paso.'],
-    null,
-    null,
-    [flowSecundario]
-)
-
-const flowPrincipal = addKeyword(['hola', 'ole', 'alo'])
-    .addAnswer('🙌 Hola bienvenido a este *Chatbot*')
+const getUser = async (documentNumber) => {
+    return await getUserByDocument(documentNumber).then((response) => {
+      return response.data;
+    });
+  };
+  
+  //Flujos
+  
+  const flowPagoYape = addKeyword("1")
     .addAnswer(
-        [
-            'te comparto los siguientes links de interes sobre el proyecto',
-            '👉 *doc* para ver la documentación',
-            '👉 *gracias*  para ver la lista de videos',
-            '👉 *discord* unirte al discord',
-        ],
-        null,
-        null,
-        [flowDocs, flowGracias, flowTuto, flowDiscord]
+      "Ingrese Monto de Yapeo",
+      { capture: true },
+      (ctx, { flowDynamic,fallBack }) => {
+        if (isNaN(ctx.body)) return fallBack();
+        return flowDynamic([{body: "continua"}])
+      }
     )
-
-const flowFormulario = addKeyword(['Hola','⬅️ Volver al Inicio'])
     .addAnswer(
-        ['Hola!','Para enviar el formulario necesito unos datos...' ,'Escriba su *Nombre*'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud')
-             return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',    // Aquí terminamos el flow si la condicion se comple
-                 buttons:[{body:'⬅️ Volver al Inicio' }]                      // Y además, añadimos un botón por si necesitas derivarlo a otro flow
-
-            
-            })
-            nombre = ctx.body
-            return flowDynamic(`Encantado *${nombre}*, continuamos...`)
+      "Ingrese Fecha y Hora de Yapeo",
+      { capture: true },
+      (ctx, { fallBack }) => {
+        if (ctx.body.length == 0) return fallBack();
+      }
+    )
+    .addAnswer(
+      "Ingrese Número de Operacipon",
+      { capture: true },
+      (ctx, { fallBack }) => {
+        if (ctx.body.length == 0) return fallBack();
+      }
+    )
+    .addAnswer(
+      "Por favor Adjunte Captura del Yape",
+      { capture: true },
+      (ctx, { fallBack }) => {
+        if (ctx.body.length == 0) return fallBack();
+      }
+    )
+    .addAnswer(
+      "Se registro la información brindada",
+      null,
+      (ctx, { fallBack, endFlow }) => {
+        return endFlow({
+          body: "Muchas gracias en breve estaremos registrando su pago",
+        });
+      }
+    );
+  
+  const flowRepotarPago = addKeyword(["1"])
+    .addAnswer(
+      "Para reportar tu pago por favor indicanos el medio de pago utilizado",
+      null,
+      null,
+      []
+    )
+    .addAnswer(
+      [
+        "1- PAGO CON YAPE",
+        "2- PAGO KASNET",
+        "3- PAGOS CC. BCP",
+        "4- PAGOS CC BANCO NACION",
+      ],
+      null,
+      null,
+      [flowPagoYape]
+    );
+  
+  const flowPrincipal = addKeyword([
+    "Hola",
+    "Buenos dias",
+    "Buenas tardes",
+    "Buenas noches",
+  ])
+    .addAnswer(
+      "Gracias por comunicarte con el área de facturación de AIRWIZ PERÚ"
+    )
+    .addAnswer(
+      "Por favor ingrese el número de DNI del titular del servicio",
+      { capture: true },
+      async (ctx, { flowDynamic, fallBack }) => {
+        if (ctx.body.length != 8) return fallBack();
+        else {
+          const result = await getUser(ctx.body);
+          if (result.length > 0) {
+            return await flowDynamic([
+              {
+                body: `Hola ${result[0].name} por favor selecciona una de las opciones siguientes para tu atención`,
+              },
+            ]);
+          } else return fallBack();
         }
+      }
     )
     .addAnswer(
-        ['También necesito tus dos apellidos'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud') 
-                return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',
-                    buttons:[{body:'⬅️ Volver al Inicio' }]
-
-
-        })
-        apellidos = ctx.body
-        return flowDynamic(`Perfecto *${nombre}*, por último...`)
-        }
-    )
-    .addAnswer(
-        ['Dejeme su número de teléfono y le llamaré lo antes posible.'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud') 
-                return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',
-                      buttons:[{body:'⬅️ Volver al Inicio' }]
-                })
-
-
-                telefono = ctx.body
-                // await delay(2000)
-                return flowDynamic(`Estupendo *${nombre}*! te dejo el resumen de tu formulario
-                \n- Nombre y apellidos: *${nombre} ${apellidos}*
-                \n- Telefono: *${telefono}*`)
-        }
-    )
+      [
+        "1. Reportar Pago",
+        "2. Conocer el monto de mi deuda a la fecha",
+        "3. Donde puedo hacer el pago del servicio",
+      ],
+      { capture: true },
+      async (ctx, { flowDynamic, fallBack }) => {},
+      [flowRepotarPago]
+    );
 
 const main = async () => {
     const adapterDB = new MockAdapter()
-    const adapterFlow = createFlow([flowFormulario])
+    const adapterFlow = createFlow([flowPrincipal])
 
     const adapterProvider = createProvider(MetaProvider, {
         jwtToken: 'EAACbK7Q2cwABO6ZAWDr2QTeXeVavSZCtZANvneQxytTsem95TQj2eFaZCAMaIMPhdcl8ue1eKZBuma1iBXnSh8OimEe8CMqxmDGZBSHGsPudOZAvrmWPsoMSHEj3j3pGbRMDDcXiP4eCi1Ear3OmJySiYSsKP6z0W8np1O7yhrvfBP0ZASjUlEeylJAwEscVTKx9ggx4ZBYZCtzqpKKYhz4QQZD',
