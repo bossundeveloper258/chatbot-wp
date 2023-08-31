@@ -62,7 +62,7 @@ const flowPrincipal = addKeyword([
         null
     );
 
-const flowOptionReportarPago = addKeyword( "REPORTAR PAGO" )
+const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer(
         ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],null,null
         // {
