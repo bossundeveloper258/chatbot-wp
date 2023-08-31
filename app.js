@@ -48,9 +48,7 @@ const flowPrincipal = addKeyword([
           const result = await getUser(ctx.body);
           if (result.length > 0) {
             return await flowDynamic([
-              {
-                body: `Hola ${result[0].name}`,
-              },
+              { body: `Hola ${result[0].name}`},
             ]);
           } else return fallBack();
         }
@@ -65,14 +63,7 @@ const flowPrincipal = addKeyword([
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer(
         ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
-        {
-            buttons: [
-                {body: 'PAGO YAPE'},
-                {body: 'PAGO KASNET'},
-                {body: 'PAGOS BCP'},
-                {body: 'PAGOS BANCO NACION'}
-            ]
-        },
+        { buttons: [ { body: 'PAGO YAPE'},{ body: 'PAGO KASNET'},{ body: 'PAGO BCP'},{ body: 'PAGS BANCO NACION'} ]},
         null
     );
 
