@@ -59,11 +59,13 @@ const flowPrincipal = addKeyword([
     .addAnswer(
         ["Por favor selecciona una de las opciones siguientes para tu atención"],
       {
+        capture: true,
         buttons: [
             {body: "Reportar Pago"},
             {body: "Conocer el monto de mi deuda a la fecha"},
             {body: "Donde puedo hacer el pago del servicio"}
         ]},
+        null
     );
 
 const flowOptionReportarPago = addKeyword( ["Reportar Pago"] )
@@ -82,7 +84,7 @@ const flowOptionReportarPago = addKeyword( ["Reportar Pago"] )
 const flowFormulario = addKeyword(['Hola','⬅️ Volver al Inicio'])
     .addAnswer(
         ['Hola!','Para enviar el formulario necesito unos datos...' ,'Escriba su *Nombre*'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
+        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' },{body: 'Reportar Pago'}] },
 
         async (ctx, { flowDynamic, endFlow }) => {
             if (ctx.body == '❌ Cancelar solicitud')
@@ -133,7 +135,8 @@ const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
-            flowFormulario
+            flowFormulario,
+            flowOptionReportarPago
         ]);
 
     const adapterProvider = createProvider(MetaProvider, {
