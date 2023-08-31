@@ -5,7 +5,7 @@ const MockAdapter = require('@bot-whatsapp/database/mock');
 
 const { getUserByDocument } = require("./services/mikrowisp.service");
 
-const { reportarPago } = require("./config/config");
+const { reportarPago , conocerMontodeuda} = require("./config/config");
 
 const  flowReportarPagoYape = require("./options/reportarPago");
 
@@ -58,7 +58,7 @@ const flowPrincipal = addKeyword([
     )
     .addAnswer(
         ["Por favor selecciona una de las opciones siguientes para tu atención"],
-        { buttons: [ { body: 'Reportar Pago'}]},
+        { buttons: [ { body: reportarPago} , { body: conocerMontodeuda }]},
         null
     );
 

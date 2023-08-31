@@ -1,3 +1,4 @@
-const reportarPago = "Reportar Pago";
+const reportarPago = 'Reportar Pago';
+const conocerMontodeuda = 'Conocer monto de deuda';
 
-module.exports = { reportarPago }
+module.exports = { reportarPago , conocerMontodeuda}
