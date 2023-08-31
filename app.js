@@ -60,13 +60,13 @@ const flowPrincipal = addKeyword([
         ["Por favor selecciona una de las opciones siguientes para tu atención"],
       {
         buttons: [
-            {body: reportarPago},
+            {body: "Reportar Pago"},
             {body: "Conocer el monto de mi deuda a la fecha"},
             {body: "Donde puedo hacer el pago del servicio"}
         ]},
     );
 
-const flowOptionReportarPago = addKeyword( reportarPago )
+const flowOptionReportarPago = addKeyword( ["Reportar Pago"] )
     .addAnswer(
         ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
         {
@@ -78,7 +78,6 @@ const flowOptionReportarPago = addKeyword( reportarPago )
             ]
         }
     );
-
 
 const main = async () => {
     const adapterDB = new MockAdapter()
