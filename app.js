@@ -58,7 +58,7 @@ const flowPrincipal = addKeyword([
     )
     .addAnswer(
         ["Por favor selecciona una de las opciones siguientes para tu atención"],
-        { buttons: [ { body: reportarPago} , { body: conocerMontodeuda }]},
+        { buttons: [ { body: reportarPago} ]},
         null
     );
 
