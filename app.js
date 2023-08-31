@@ -67,10 +67,10 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
         {
             buttons: [
-                {body: "PAGO YAPE"},
-                {body: "PAGO KASNET"},
-                {body: "PAGOS BCP"},
-                {body: "PAGOS BANCO NACION"}
+                {body: 'PAGO YAPE'},
+                {body: 'PAGO KASNET'},
+                {body: 'PAGOS BCP'},
+                {body: 'PAGOS BANCO NACION'}
             ]
         },
         null
