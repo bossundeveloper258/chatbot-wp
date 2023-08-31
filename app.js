@@ -129,7 +129,7 @@ const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
-            flowFormulario,
+            flowPrincipal,
             flowOptionReportarPago
         ]);
 
