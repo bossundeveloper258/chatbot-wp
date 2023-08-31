@@ -64,15 +64,16 @@ const flowPrincipal = addKeyword([
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer(
-        ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],null,null
-        // {
-        //     buttons: [
-        //         {body: "PAGO YAPE"},
-        //         {body: "PAGO KASNET"},
-        //         {body: "PAGOS BCP"},
-        //         {body: "PAGOS BANCO NACION"}
-        //     ]
-        // }
+        ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
+        {
+            buttons: [
+                {body: "PAGO YAPE"},
+                {body: "PAGO KASNET"},
+                {body: "PAGOS BCP"},
+                {body: "PAGOS BANCO NACION"}
+            ]
+        },
+        null
     );
 
 
