@@ -81,8 +81,7 @@ const main = async () => {
     const adapterFlow = createFlow(
         [
             flowPrincipal,
-            flowOptionReportarPago,
-            flowReportarPagoYape
+            flowOptionReportarPago
         ]);
 
     const adapterProvider = createProvider(MetaProvider, {
