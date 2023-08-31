@@ -1,7 +1,7 @@
 
 const { reportarPago } = require("../config/config");
 const {
-    addKeyword,
+    addKeyword
   } = require("@bot-whatsapp/bot");
 
 const flowReportarPagoYape = addKeyword( reportarPago )

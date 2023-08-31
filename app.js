@@ -58,7 +58,7 @@ const flowPrincipal = addKeyword([
     )
     .addAnswer(
         "Por favor selecciona una de las opciones siguientes para tu atención",
-      { capture: true,
+      {
         buttons: [
             {body: reportarPago},
             {body: "Conocer el monto de mi deuda a la fecha"},
