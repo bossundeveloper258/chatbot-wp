@@ -57,7 +57,7 @@ const flowPrincipal = addKeyword([
       }
     )
     .addAnswer(
-        "Por favor selecciona una de las opciones siguientes para tu atención",
+        ["Por favor selecciona una de las opciones siguientes para tu atención"],
       {
         buttons: [
             {body: reportarPago},
@@ -68,7 +68,7 @@ const flowPrincipal = addKeyword([
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer(
-        "Para reportar tu pago por favor indicanos el medio de pago utilizado",
+        ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
         {
             buttons: [
                 {body: "PAGO CON YAPE"},
