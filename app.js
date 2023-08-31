@@ -5,7 +5,7 @@ const MockAdapter = require('@bot-whatsapp/database/mock');
 
 const { getUserByDocument } = require("./services/mikrowisp.service");
 
-const { reportarPago , conocerMontodeuda} = require("./config/config");
+const { reportarPago , conocerMontodeuda, dondePagar} = require("./config/config");
 
 const  flowReportarPagoYape = require("./options/reportarPago");
 
@@ -58,79 +58,31 @@ const flowPrincipal = addKeyword([
     )
     .addAnswer(
         ["Por favor selecciona una de las opciones siguientes para tu atención"],
-        { buttons: [ { body: reportarPago},{ body: conocerMontodeuda} ]},
+        { buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
         null
     );
 
-const flowOptionReportarPago = addKeyword( ["Reportar Pago"] )
+const flowOptionReportarPago = addKeyword( [reportarPago] )
     .addAnswer(
         ["Para reportar tu pago por favor indicanos el medio de pago utilizado"],
         {
             buttons: [
                 {body: "PAGO CON YAPE"},
                 {body: "PAGO KASNET"},
-                {body: "PAGOS CC. BCP"},
-                {body: "PAGOS CC BANCO NACION"}
+                {body: "PAGOS BCP"},
+                {body: "PAGOS BANCO NACION"}
             ]
         }
     );
 
-const flowFormulario = addKeyword(['Hola','⬅️ Volver al Inicio'])
-    .addAnswer(
-        ['Hola!','Para enviar el formulario necesito unos datos...' ,'Escriba su *Nombre*'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' },{body: reportarPago}] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud')
-             return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',    // Aquí terminamos el flow si la condicion se comple
-                 buttons:[{body:'⬅️ Volver al Inicio' }]                      // Y además, añadimos un botón por si necesitas derivarlo a otro flow
-
-            
-            })
-            nombre = ctx.body
-            return flowDynamic(`Encantado *${nombre}*, continuamos...`)
-        }
-    )
-    .addAnswer(
-        ['También necesito tus dos apellidos'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud') 
-                return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',
-                    buttons:[{body:'⬅️ Volver al Inicio' }]
-
-
-        })
-        apellidos = ctx.body
-        return flowDynamic(`Perfecto *${nombre}*, por último...`)
-        }
-    )
-    .addAnswer(
-        ['Dejeme su número de teléfono y le llamaré lo antes posible.'],
-        { capture: true, buttons: [{ body: '❌ Cancelar solicitud' }] },
-
-        async (ctx, { flowDynamic, endFlow }) => {
-            if (ctx.body == '❌ Cancelar solicitud') 
-                return endFlow({body: '❌ Su solicitud ha sido cancelada ❌',
-                      buttons:[{body:'⬅️ Volver al Inicio' }]
-                })
-
-
-                telefono = ctx.body
-                await delay(2000)
-                return flowDynamic(`Estupendo *${nombre}*! te dejo el resumen de tu formulario
-                \n- Nombre y apellidos: *${nombre} ${apellidos}*
-                \n- Telefono: *${telefono}*`)
-        }
-    )
 
 const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
             flowPrincipal,
-            flowOptionReportarPago
+            flowOptionReportarPago,
+            flowReportarPagoYape
         ]);
 
     const adapterProvider = createProvider(MetaProvider, {
