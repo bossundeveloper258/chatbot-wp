@@ -314,7 +314,8 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
       }
   );
 
-
+let amount = 0;
+let media = null
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
     'Consultando factura, espere un momento por favor',
@@ -324,16 +325,22 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       console.log(userId , "userId")
       const result = await getLastInvoice(documentNumber);
       console.log(result);
+      amount = result.amount;
+      media = result.media;
       if(result !== null){
-        await flowDynamic([              
-          {
-            body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
-            media: result.url
-          }
-        ]);
+        // await flowDynamic([              
+        //   {
+        //     body: `El monto de la deuda es: *${result.amount.toFixed(2)}*`,
+        //     media: result.url
+        //   }
+        // ]);
       }else{
         return fallBack('No hay facturas pendientes de pago');
       }
+    }
+  ).addAnswer(
+    `El monto de la deuda es: *${amount.toFixed(2)}*` , {
+      media: media
     }
   );
 
