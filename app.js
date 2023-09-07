@@ -112,7 +112,28 @@ const flowReportarPagoYape = addKeyword( pagoYape )
       messages.PAGO.MONTO,
       { capture: true },
       (ctx, { flowDynamic,fallBack }) => {
-        if ( isNaN(ctx.boby) ) return fallBack( messages.ERROR.ONLY_NUMBER );
+        if (!isNaN(ctx.boby)) return fallBack('Debe ingresar solo números');
+        else amount = ctx.body;
+      }
+    )
+    .addAnswer(
+      messages.PAGO.FECHA,
+      { capture: true },
+      (ctx, { fallBack }) => {
+        if (ctx.body.length == 0) return fallBack();
+        else{
+          let validateDate = moment(ctx.body, 'DD-MM-YYYY', true).isValid();
+          if(!validateDate) return fallBack('Debe ingresar la información con el siguiente formato [DD-MM-YYYY]');
+          else paymentDate = ctx.body;
+        }
+      }
+    )
+    .addAnswer(
+      messages.PAGO.HORA,
+      {capture: true},
+      (ctx, {fallBack}) => {
+        if (ctx.body.length == 0) return fallBack('Debe ingresar la hora de operación');
+        else hourPayment = ctx.body;
       }
     )
     .addAnswer(
@@ -154,24 +175,34 @@ const flowReportarPagoYape = addKeyword( pagoYape )
     );
 
   const flowSeleccionBancoBCP = addKeyword( pagoBCP )
-    .addAnswer(
-      messages.PAGO.MONTO,
-      { capture: true },
-      (ctx, { flowDynamic,fallBack }) => {
-        if ( isNaN(ctx.boby) ) return fallBack( messages.ERROR.ONLY_NUMBER );
+  .addAnswer(
+    messages.PAGO.MONTO,
+    { capture: true },
+    (ctx, { flowDynamic,fallBack }) => {
+      if (!isNaN(ctx.boby)) return fallBack('Debe ingresar solo números');
+      else amount = ctx.body;
+    }
+  )
+  .addAnswer(
+    messages.PAGO.FECHA,
+    { capture: true },
+    (ctx, { fallBack }) => {
+      if (ctx.body.length == 0) return fallBack();
+      else{
+        let validateDate = moment(ctx.body, 'DD-MM-YYYY', true).isValid();
+        if(!validateDate) return fallBack('Debe ingresar la información con el siguiente formato [DD-MM-YYYY]');
+        else paymentDate = ctx.body;
       }
-    )
-    .addAnswer(
-      messages.PAGO.FECHA,
-      { capture: true },
-      (ctx, { fallBack }) => {
-        if (ctx.body.length == 0) return fallBack();
-        else{
-          let validateDate = moment(ctx.body, 'DD-MM-YYYY HH:mm:ss', true).isValid();
-          if(!validateDate) return fallBack( messages.ERROR.FORMAT_DATE );
-        }
-      }
-    )
+    }
+  )
+  .addAnswer(
+    messages.PAGO.HORA,
+    {capture: true},
+    (ctx, {fallBack}) => {
+      if (ctx.body.length == 0) return fallBack('Debe ingresar la hora de operación');
+      else hourPayment = ctx.body;
+    }
+  )
     .addAnswer(
       messages.PAGO.OPERACION,
       { capture: true },
@@ -201,22 +232,32 @@ const flowReportarPagoYape = addKeyword( pagoYape )
 
 const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
   .addAnswer(
-      messages.PAGO.MONTO,
-      { capture: true },
-      (ctx, { flowDynamic,fallBack }) => {
-      if ( isNaN(ctx.boby) ) return fallBack( messages.ERROR.ONLY_NUMBER );
-      }
+    messages.PAGO.MONTO,
+    { capture: true },
+    (ctx, { flowDynamic,fallBack }) => {
+      if (!isNaN(ctx.boby)) return fallBack('Debe ingresar solo números');
+      else amount = ctx.body;
+    }
   )
   .addAnswer(
-      messages.PAGO.FECHA,
-      { capture: true },
-      (ctx, { fallBack }) => {
+    messages.PAGO.FECHA,
+    { capture: true },
+    (ctx, { fallBack }) => {
       if (ctx.body.length == 0) return fallBack();
       else{
-          let validateDate = moment(ctx.body, 'DD-MM-YYYY HH:mm:ss', true).isValid();
-          if(!validateDate) return fallBack( messages.ERROR.FORMAT_DATE );
+        let validateDate = moment(ctx.body, 'DD-MM-YYYY', true).isValid();
+        if(!validateDate) return fallBack('Debe ingresar la información con el siguiente formato [DD-MM-YYYY]');
+        else paymentDate = ctx.body;
       }
-      }
+    }
+  )
+  .addAnswer(
+    messages.PAGO.HORA,
+    {capture: true},
+    (ctx, {fallBack}) => {
+      if (ctx.body.length == 0) return fallBack('Debe ingresar la hora de operación');
+      else hourPayment = ctx.body;
+    }
   )
   .addAnswer(
       messages.PAGO.OPERACION,

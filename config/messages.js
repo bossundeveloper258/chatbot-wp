@@ -1,7 +1,8 @@
 const messages = {
     PAGO:{
         MONTO: "Ingrese Monto",
-        FECHA: "Ingrese Fecha y Hora de Operación [DD-MM-YYYY HH:mm:ss]",
+        FECHA: "Ingrese Fecha de Operación [DD-MM-YYYY]",
+        HORA: "Ingresar Hora de Operación [HH:mm]",
         OPERACION: "Ingrese Número de Operación",
         ARCHIVO_ADJUNTO: "Por favor Adjunte Captura",
         SUCCESS: "Se registro la información brindada",
