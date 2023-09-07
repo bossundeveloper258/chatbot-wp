@@ -306,7 +306,9 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
     'Consultando factura, espere un momento por favor',
     {capture: false},
     async (ctx, { flowDynamic, fallBack }) => {
+      console.log(documentNumber , "documentNumber")
       const result = await getLastInvoice(documentNumber);
+      console.log(result);
       if(result !== null){
         await flowDynamic([              
           {
