@@ -290,20 +290,20 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
     'Consultando factura, espere un momento por favor',
-    {capture: false},
-    async (ctx, { flowDynamic, fallBack }) => {
-      const result = await getLastInvoice(documentNumber);
-      if(result !== null){
-        await flowDynamic([              
-          {
-            body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
-            media: result.url
-          }
-        ]);
-      }else{
-        return fallBack('No hay facturas pendientes de pago');
-      }
-    }
+    // {capture: true},
+    // async (ctx, { flowDynamic, fallBack }) => {
+    //   const result = await getLastInvoice(documentNumber);
+    //   if(result !== null){
+    //     await flowDynamic([              
+    //       {
+    //         body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
+    //         media: result.url
+    //       }
+    //     ]);
+    //   }else{
+    //     return fallBack('No hay facturas pendientes de pago');
+    //   }
+    // }
   );
 
 
