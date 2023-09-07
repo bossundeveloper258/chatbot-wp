@@ -35,6 +35,19 @@ const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, g
  * 
  */
 
+
+//Variables
+var userId;
+var documentNumber;
+var invoiceId;
+var paymentDate;
+var hourPayment;
+var transactionCode;
+var serviceId;
+var amount;
+var file;
+
+
 const getServiceByUser = async (documentNumber) => {
   return await getServiceByUserDocument(documentNumber).then((response) => {
     return response.data;
@@ -84,6 +97,7 @@ const flowPrincipal = addKeyword([
     async (ctx, { flowDynamic, fallBack }) => {
       if (ctx.body.length != 8) return fallBack();
       else {
+        documentNumber = ctx.body;
         const result = await getUser(ctx.body);
         if (result.length > 0) {
           return await flowDynamic([
@@ -290,20 +304,22 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
     'Consultando factura, espere un momento por favor',
-    // {capture: true},
-    // async (ctx, { flowDynamic, fallBack }) => {
-    //   const result = await getLastInvoice(documentNumber);
-    //   if(result !== null){
-    //     await flowDynamic([              
-    //       {
-    //         body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
-    //         media: result.url
-    //       }
-    //     ]);
-    //   }else{
-    //     return fallBack('No hay facturas pendientes de pago');
-    //   }
-    // }
+    {capture: false},
+    async (ctx, { flowDynamic, fallBack }) => {
+      const result = await getLastInvoice(documentNumber);
+      if(result !== null){
+        await flowDynamic([              
+          {
+            body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
+          },
+          {
+            media: result.url
+          }
+        ]);
+      }else{
+        return fallBack('No hay facturas pendientes de pago');
+      }
+    }
   );
 
 
