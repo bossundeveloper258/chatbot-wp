@@ -25,6 +25,20 @@ async function getUserByDocument (documentNumber)  {
     });
 };
 
+async function getServiceByUserDocument (documentNumber)  {
+    return await instaceMikrowisp.get(`/services/search?documentNumber=${documentNumber}`).then(response => {
+        const data = response.data;
+        return data;
+    });
+};
+
+async function getUserDetailByDocument(documentNumber) {
+    return await instaceMikrowisp.get(`/users/user-detail?documentNumber=${documentNumber}`).then(response => {
+        const data = response.data;
+        return data;
+    });
+}
+
 async function getPrincipalOption ()  {
     return await instaceMikrowisp.get(`/parameter-details/search?parameterId=${parameterPrincipalOption}`).then(response => {
         const data = response.data;
@@ -32,8 +46,18 @@ async function getPrincipalOption ()  {
     });
 };
 
+async function getLastInvoiceByCustomer(documentNumber, userId){
+    return await instaceMikrowisp.get(`/invoices/last-invoice?documentNumber=${documentNumber}&userId=${userId}&state=no pagado`).then(response => {
+        const data = response.data;
+        return data;
+    })
+}
+
 module.exports = {
     getKeyword,
     getInformationTitular,
-    getUserByDocument
+    getUserByDocument,
+    getLastInvoiceByCustomer,
+    getServiceByUserDocument,
+    getUserDetailByDocument
 };
