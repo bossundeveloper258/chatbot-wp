@@ -3,7 +3,6 @@ const MetaProvider = require('@bot-whatsapp/provider/meta')
 const MockAdapter = require('@bot-whatsapp/database/mock');
 require('dotenv').config();
 
-console.log(  process.env.TOKEN_BOT , "###" );
 const { 
     reportarPago, 
     conocerMontodeuda, 
@@ -67,7 +66,7 @@ const getLastInvoice = async (documentNumber) => {
 }
 
 const getUser = async (documentNumber) => {
-  return await getUserByDocument(documentNumber).then((response) => {
+  return await getUserByDocument(documentNumber, userId).then((response) => {
     return response.data;
   });
 };
@@ -100,6 +99,10 @@ const flowPrincipal = addKeyword([
         documentNumber = ctx.body;
         const result = await getUser(ctx.body);
         if (result.length > 0) {
+
+          serviceList = result;
+          userId = result[0].userId;
+          
           return await flowDynamic([
             { body: `Hola ${result[0].name}`},
           ]);
