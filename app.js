@@ -328,8 +328,6 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
         await flowDynamic([              
           {
             body: `El monto de la deuda es:  ${result.amount.toFixed(2)}`,
-          },
-          {
             media: result.url
           }
         ]);
