@@ -45,7 +45,17 @@ var transactionCode;
 var serviceId;
 var amount;
 var file;
+var serviceList = [];
 
+const postPaymentPromise = () => {
+  console.log(userId);
+  console.log(documentNumber);
+  console.log(paymentDate);
+  console.log(hourPayment);
+  console.log(transactionCode);
+  console.log(amount);
+  console.log(file);
+};
 
 const getServiceByUser = async (documentNumber) => {
   return await getServiceByUserDocument(documentNumber).then((response) => {
@@ -60,7 +70,8 @@ const getUserDetail = async (documentNumber) => {
 };
 
 const getLastInvoice = async (documentNumber) => {
-  return await getLastInvoiceByCustomer(documentNumber).then((response) => {
+  console.log(userId , "---")
+  return await getLastInvoiceByCustomer(documentNumber, userId).then((response) => {
       return response.data;
   });
 }
@@ -97,12 +108,12 @@ const flowPrincipal = addKeyword([
       if (ctx.body.length != 8) return fallBack();
       else {
         documentNumber = ctx.body;
-        const result = await getUser(ctx.body);
+        const result = await getUserDetail(ctx.body);
         if (result.length > 0) {
 
           serviceList = result;
           userId = result[0].userId;
-          
+
           return await flowDynamic([
             { body: `Hola ${result[0].name}`},
           ]);
@@ -310,6 +321,7 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
     {capture: false},
     async (ctx, { flowDynamic, fallBack }) => {
       console.log(documentNumber , "documentNumber")
+      console.log(userId , "userId")
       const result = await getLastInvoice(documentNumber);
       console.log(result);
       if(result !== null){
