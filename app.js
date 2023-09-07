@@ -2,6 +2,8 @@ const { createBot, createProvider, createFlow, addKeyword } = require('@bot-what
 const MetaProvider = require('@bot-whatsapp/provider/meta')
 const MockAdapter = require('@bot-whatsapp/database/mock');
 require('dotenv').config();
+
+console.log(  process.env.TOKEN_BOT , "###" );
 const { 
     reportarPago, 
     conocerMontodeuda, 
