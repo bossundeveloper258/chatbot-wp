@@ -43,7 +43,7 @@ var paymentDate;
 var hourPayment;
 var transactionCode;
 var serviceId;
-var amount;
+var amount = 0;
 var file;
 var serviceList = [];
 
@@ -314,7 +314,6 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
       }
   );
 
-let amount = 0;
 let media = null
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
