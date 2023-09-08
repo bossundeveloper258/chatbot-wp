@@ -105,7 +105,7 @@ const flowPrincipal = addKeyword([
   .addAnswer(
     "Por favor ingrese el número de *DNI* del titular del servicio",
     { capture: true},
-    async (ctx, { flowDynamic, fallBack }) => {
+    async (ctx, { flowDynamic, fallBack , state}) => {
       if (ctx.body.length != 8) return fallBack();
       else {
         documentNumber = ctx.body;
