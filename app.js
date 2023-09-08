@@ -110,6 +110,7 @@ const flowPrincipal = addKeyword([
       else {
         documentNumber = ctx.body;
         const result = await getUserDetail(ctx.body);
+        console.log( result , "detalle");
         if (result.length > 0) {
 
           serviceList = result;
