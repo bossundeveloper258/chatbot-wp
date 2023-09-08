@@ -47,7 +47,7 @@ var serviceId;
 var amount = 0;
 var file;
 var serviceList = [];
-var buttonList = [];
+var buttonList = "";
 
 const postPaymentPromise = () => {
   console.log(userId);
@@ -115,9 +115,10 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          
-          buttonList = serviceList?.map( (s,i) => { return { body: `*${i+1}.* ${s.userId}` } } );
-
+          buttonList = "";
+          for (let index = 0; index < serviceList.length; index++) {
+            buttonList += `\n*${i+1}.* ${s.userId}`
+          }
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
@@ -131,7 +132,6 @@ const flowPrincipal = addKeyword([
       { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
       async ( ctx, { gotoFlow }) => {
         const reporte = ctx.body;
-        console.log( buttonList , "dddddd" )
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
 
@@ -147,15 +147,13 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer( [ {body: "Selecciona el servicio"} , ...buttonList], {capture: true},
+    .addAnswer( [ "Selecciona el servicio" , buttonList], {capture: true},
       async ( ctx, {}) => {
 
         if( ctx.body == "1" ){
-          
+
         }
-        console.log(ctx.body)
-        console.log( buttonList )
-        
+        console.log(ctx.body)        
         console.log(ctx.from)
       }
     )
