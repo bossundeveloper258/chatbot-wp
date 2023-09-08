@@ -115,7 +115,7 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          console.log( serviceList?.map( s => { return { body: `${s.addressBilling}` } } ) )
+          console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
@@ -134,7 +134,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio" , 
       {
         capture: true ,
-        buttons: serviceList?.map( s => { return { body: `${s.addressBilling}` } } ) ?? []
+        buttons: serviceList?.map( s => { return { body: `${s.userId}` } } ) ?? []
       },
       async ( ctx, {}) => {
         console.log(ctx.body)
