@@ -105,7 +105,7 @@ const flowPrincipal = addKeyword([
   .addAnswer(
     "Por favor ingrese el número de *DNI* del titular del servicio",
     { capture: true},
-    async (ctx, { flowDynamic, fallBack , state}) => {
+    async (ctx, { flowDynamic, fallBack }) => {
       if (ctx.body.length != 8) return fallBack();
       else {
         documentNumber = ctx.body;
@@ -118,7 +118,6 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
 
-          state.update({ serviceList: serviceList?.map( s => { return { body: `${s.userId}` } } ) })
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
