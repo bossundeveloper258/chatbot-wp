@@ -47,6 +47,7 @@ var serviceId;
 var amount = 0;
 var file;
 var serviceList = [];
+var buttonList = [];
 
 const postPaymentPromise = () => {
   console.log(userId);
@@ -110,14 +111,13 @@ const flowPrincipal = addKeyword([
       else {
         documentNumber = ctx.body;
         const result = await getUserDetail(ctx.body);
-        console.log( result , "detalle");
         if (result.length > 0) {
-
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
-
+          
+          buttonList = serviceList?.map( s => { return { body: `${s.userId}` } } );
+          console.log( buttonList );
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
@@ -141,11 +141,11 @@ const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio" , 
       {
         capture: true,
-        buttons: serviceList.map( s => { return { body: ''+s.userId } } )
+        buttons: buttonList
       },
       async ( ctx, {}) => {
         console.log(ctx.body)
-        console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
+        console.log( buttonList )
         
         console.log(ctx.from)
       }
