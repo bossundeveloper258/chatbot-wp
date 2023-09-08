@@ -104,7 +104,7 @@ const flowPrincipal = addKeyword([
   )
   .addAnswer(
     "Por favor ingrese el *número de DNI* del titular del servicio",
-    { capture: true},
+    { capture: false},
     async (ctx, { flowDynamic, fallBack }) => {
       if (ctx.body.length != 8) return fallBack();
       else {
@@ -120,6 +120,14 @@ const flowPrincipal = addKeyword([
           ]);
         } else return fallBack();
       }
+    }
+  )
+  .addAnswer(
+    "Selecciona el servicio",
+    {
+      buttons: serviceList.map( s => { return {
+        body: `${s.userId}-${s.name}`
+      } } )
     }
   )
   .addAnswer(
@@ -331,11 +339,11 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
         await flowDynamic([              
           {
             body: `Hola *${userName}*
-            Te enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
-            
-            El monto de la deuda es: *${result.amount.toFixed(2)}* 
-            
-            Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
+Te enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
+
+El monto de la deuda es: *${result.amount.toFixed(2)}* 
+
+Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
             //media: result.url
           }
         ]);
