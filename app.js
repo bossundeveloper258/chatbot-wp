@@ -47,7 +47,7 @@ var serviceId;
 var amount = 0;
 var file;
 var serviceList = [];
-
+var buttonList = [];
 
 const postPaymentPromise = () => {
   console.log(userId);
@@ -115,7 +115,7 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          var buttonList = [];
+          
           buttonList = serviceList?.map( (s,i) => { return { body: `*${i+1}.* ${s.userId}` } } );
 
           for (let index = 0; index < result.length; index++) {
