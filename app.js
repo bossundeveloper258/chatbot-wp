@@ -371,11 +371,12 @@ const flowDondePagar = addKeyword( dondePagar )
 
 const flowYape = addKeyword( PARGARYAPE )
   .addAnswer("Aquí encontrará una imágen de como realizar el pago por yape", {
+    media: 'https://www.airwiz.com.pe/wp-content/uploads/2023/06/yo-meditando-web.png',
     delay: 500,
     },
     async (ctx, {flowDynamic}) => {
       await flowDynamic([{
-        media: 'https://www.tiktok.com/@airwizperu/video/7272889450462465286'
+        body: 'https://www.tiktok.com/@airwizperu/video/7272889450462465286'
       }])
     }
   )
