@@ -117,7 +117,7 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           buttonList = "";
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList += `\n*${index+1}.* ${serviceList[index].userId}`
+            buttonList += `*${index+1}.* ${serviceList[index].userId}\n`
           }
           // await flowDynamic(services);
           return await flowDynamic([
@@ -147,7 +147,7 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer("Selecciona el servicio")
+    .addAnswer("Selecciona el servicio", null, null)
     .addAnswer( buttonList , {capture: true},
       async ( ctx, {}) => {
 
