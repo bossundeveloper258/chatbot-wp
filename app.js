@@ -148,7 +148,7 @@ const flowPrincipal = addKeyword([
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio", null,
-      async ( ctx, {})=>{
+      async ( ctx, {flowDynamic}) => {
         return await flowDynamic( buttonList );
       }
     )
