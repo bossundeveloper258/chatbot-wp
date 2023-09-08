@@ -152,6 +152,11 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         return await flowDynamic( buttonList );
       }
     )
+    .addAction(
+      async ( ctx, {flowDynamic}) => {
+        console.log( ctx.body )
+      }
+    )
     // .addAnswer( buttonList , {capture: true},
     //   async ( ctx, {}) => {
 
