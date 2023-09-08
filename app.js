@@ -132,7 +132,7 @@ const flowPrincipal = addKeyword([
       async ( ctx, { gotoFlow }) => {
         const reporte = ctx.body;
         if( reporte == reportarPago ){
-          await  gotoFlow( flowOptionReportarPago )
+          // await  gotoFlow( flowOptionReportarPago )
         }
       }
 );
@@ -452,7 +452,7 @@ const main = async () => {
         [
             flowPrincipal,
 
-            // flowOptionReportarPago,
+            flowOptionReportarPago,
 
             flowReportarPagoYape,
             flowSeleccionBancoBCP,
