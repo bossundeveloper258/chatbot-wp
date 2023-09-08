@@ -115,10 +115,6 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          // console.log( result )
-          // const services = serviceList.map( s => { return {
-          //   body: `${s.userId}-${s.name}`
-          // } } );
 
           // await flowDynamic(services);
           return await flowDynamic([
@@ -128,14 +124,6 @@ const flowPrincipal = addKeyword([
       }
     }
   )
-  // .addAnswer(
-  //   "Selecciona el servicio",
-  //   {
-  //     buttons: serviceList.map( s => { return {
-  //       body: `${s.userId}-${s.name}`
-  //     } } )
-  //   }
-  // )
   .addAnswer(
       ["Por favor selecciona una de las opciones siguientes para tu atención"],
       { buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
