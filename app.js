@@ -144,8 +144,9 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         buttons: [{body: '1958'}]//serviceList?.map( s => { return { body: `${s.userId}` } } ) ?? []
       },
       async ( ctx, {}) => {
-        console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
         console.log(ctx.body)
+        console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
+        
         console.log(ctx.from)
       }
     )
