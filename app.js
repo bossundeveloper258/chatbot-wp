@@ -116,6 +116,8 @@ const flowPrincipal = addKeyword([
           userId = result[0].userId;
           userName = result[0].name;
           console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
+
+          state.update({ serviceList: serviceList?.map( s => { return { body: `${s.userId}` } } ) })
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
@@ -126,17 +128,23 @@ const flowPrincipal = addKeyword([
   )
   .addAnswer(
       ["Por favor selecciona una de las opciones siguientes para tu atención"],
-      { buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
-      null
+      { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
+      async ( ctx, { gotoFlow }) => {
+        const reporte = ctx.body;
+        if( reporte == reportarPago ){
+          await  gotoFlow( flowOptionReportarPago )
+        }
+      }
 );
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio" , 
       {
-        capture: true ,
+        capture: true,
         buttons: [{body: '1958'}]//serviceList?.map( s => { return { body: `${s.userId}` } } ) ?? []
       },
       async ( ctx, {}) => {
+        console.log( serviceList?.map( s => { return { body: `${s.userId}` } } ) )
         console.log(ctx.body)
         console.log(ctx.from)
       }
@@ -443,7 +451,7 @@ const main = async () => {
         [
             flowPrincipal,
 
-            flowOptionReportarPago,
+            // flowOptionReportarPago,
 
             flowReportarPagoYape,
             flowSeleccionBancoBCP,
