@@ -47,7 +47,7 @@ var serviceId;
 var amount = 0;
 var file;
 var serviceList = [];
-var buttonList = [];
+
 
 const postPaymentPromise = () => {
   console.log(userId);
@@ -115,12 +115,19 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          
-          buttonList = serviceList?.map( s => { return { body: `${s.userId}` } } );
-          console.log( buttonList );
+          var buttonList = [];
+          buttonList = serviceList?.map( (s,i) => { return { body: `*${i+1}.* ${s.userId}` } } );
+
+          for (let index = 0; index < result.length; index++) {
+            message.push({
+              body: result[index].userId + ' - ' + result[index].name
+            });        
+          }
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
+            { body: '' },
+            ...buttonList
           ]);
         } else return fallBack();
       }
@@ -131,11 +138,20 @@ const flowPrincipal = addKeyword([
       { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
       async ( ctx, { gotoFlow }) => {
         const reporte = ctx.body;
+        console.log( buttonList , "dddddd" )
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
+
         }
       }
 );
+
+// const flowVerificarServicio = addKeyword('VERIFICAR_SERVICIOS')
+//   .addAction(
+//     async(ctx) => {
+
+//     }
+//   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio" , 
@@ -151,7 +167,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
       }
     )
     .addAnswer(
-        [`*Indicanos el medio de pago utilizado*`],
+        [`Indicanos el medio de pago utilizado`],
         { buttons: [ { body: pagoYape},{ body: pagoBCP},{ body: pagoBANCONacion} ]},
         null
         // ,
