@@ -141,7 +141,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio" , 
       {
         capture: true,
-        buttons: serviceList?.map( s => { return { body: `${s.userId}-` } } ) ?? []
+        buttons: serviceList.map( s => { return { body: ''+s.userId } } )
       },
       async ( ctx, {}) => {
         console.log(ctx.body)
