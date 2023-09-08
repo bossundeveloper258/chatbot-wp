@@ -37,6 +37,7 @@ const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, g
 
 //Variables
 var userId;
+var userName;
 var documentNumber;
 var invoiceId;
 var paymentDate;
@@ -102,7 +103,7 @@ const flowPrincipal = addKeyword([
     "Gracias por comunicarte con el área de facturación de AIRWIZ PERÚ"
   )
   .addAnswer(
-    "Por favor ingrese el número de DNI del titular del servicio",
+    "Por favor ingrese el *número de DNI* del titular del servicio",
     { capture: true},
     async (ctx, { flowDynamic, fallBack }) => {
       if (ctx.body.length != 8) return fallBack();
@@ -113,9 +114,9 @@ const flowPrincipal = addKeyword([
 
           serviceList = result;
           userId = result[0].userId;
-
+          userName = result[0].name;
           return await flowDynamic([
-            { body: `Hola ${result[0].name}`},
+            { body: `Hola *${userName}*`},
           ]);
         } else return fallBack();
       }
@@ -129,7 +130,7 @@ const flowPrincipal = addKeyword([
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer(
-        ["Indicanos el medio de pago utilizado"],
+        [`*Indicanos el medio de pago utilizado*`],
         { buttons: [ { body: pagoYape},{ body: pagoBCP},{ body: pagoBANCONacion} ]},
         null
         // ,
@@ -327,21 +328,22 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       amount = result.amount;
       media = result.media;
       if(result !== null){
-        // await flowDynamic([              
-        //   {
-        //     body: `El monto de la deuda es: *${result.amount.toFixed(2)}*`,
-        //     media: result.url
-        //   }
-        // ]);
+        await flowDynamic([              
+          {
+            body: `Hola *${userName}*
+            Te enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
+            
+            El monto de la deuda es: *${result.amount.toFixed(2)}* 
+            
+            Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
+            //media: result.url
+          }
+        ]);
       }else{
         return fallBack('No hay facturas pendientes de pago');
       }
     }
-  ).addAnswer(
-    `El monto de la deuda es: *${amount.toFixed(2)}*` , {
-      media: media
-    }
-  );
+  )
 
 
 const flowDondePagar = addKeyword( dondePagar )
