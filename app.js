@@ -117,12 +117,7 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           
           buttonList = serviceList?.map( (s,i) => { return { body: `*${i+1}.* ${s.userId}` } } );
-
-          for (let index = 0; index < result.length; index++) {
-            message.push({
-              body: result[index].userId + ' - ' + result[index].name
-            });        
-          }
+          
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
