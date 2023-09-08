@@ -115,7 +115,7 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-
+          console.log( serviceList?.map( s => { return { body: `${s.addressBilling}` } } ) )
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
