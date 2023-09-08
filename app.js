@@ -117,12 +117,10 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           
           buttonList = serviceList?.map( (s,i) => { return { body: `*${i+1}.* ${s.userId}` } } );
-          
+
           // await flowDynamic(services);
           return await flowDynamic([
             { body: `Hola *${userName}*`},
-            { body: '' },
-            ...buttonList
           ]);
         } else return fallBack();
       }
@@ -149,12 +147,12 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer("Selecciona el servicio" , 
-      {
-        capture: true,
-        buttons: buttonList
-      },
+    .addAnswer( [ {body: "Selecciona el servicio"} , ...buttonList], {capture: true},
       async ( ctx, {}) => {
+
+        if( ctx.body == "1" ){
+          
+        }
         console.log(ctx.body)
         console.log( buttonList )
         
