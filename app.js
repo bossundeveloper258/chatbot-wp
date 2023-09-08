@@ -115,9 +115,9 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          buttonList = "";
+          buttonList = [];
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList += `*${index+1}.* ${serviceList[index].userId}\n`
+            buttonList.push({body: `*${index+1}.* ${serviceList[index].userId}` })
           }
           // await flowDynamic(services);
           return await flowDynamic([
@@ -147,17 +147,21 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer("Selecciona el servicio", null, null)
-    .addAnswer( buttonList , {capture: true},
-      async ( ctx, {}) => {
-
-        if( ctx.body == "1" ){
-
-        }
-        console.log(ctx.body)        
-        console.log(ctx.from)
+    .addAnswer("Selecciona el servicio", null,
+      async ( ctx, {})=>{
+        return await flowDynamic( buttonList );
       }
     )
+    // .addAnswer( buttonList , {capture: true},
+    //   async ( ctx, {}) => {
+
+    //     if( ctx.body == "1" ){
+
+    //     }
+    //     console.log(ctx.body)        
+    //     console.log(ctx.from)
+    //   }
+    // )
     .addAnswer(
         [`Indicanos el medio de pago utilizado`],
         { buttons: [ { body: pagoYape},{ body: pagoBCP},{ body: pagoBANCONacion} ]},
