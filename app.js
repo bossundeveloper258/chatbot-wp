@@ -131,6 +131,16 @@ const flowPrincipal = addKeyword([
 );
 
 const flowOptionReportarPago = addKeyword( reportarPago )
+    .addAnswer("Selecciona el servicio" , 
+      {
+        capture: true ,
+        buttons: serviceList?.map( s => { return { body: `${s.addressBilling}` } } ) ?? []
+      },
+      async ( ctx, {}) => {
+        console.log(ctx.body)
+        console.log(ctx.from)
+      }
+    )
     .addAnswer(
         [`*Indicanos el medio de pago utilizado*`],
         { buttons: [ { body: pagoYape},{ body: pagoBCP},{ body: pagoBANCONacion} ]},
@@ -333,11 +343,11 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
         await flowDynamic([              
           {
             body: `Hola *${userName}*
-Te enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
+            \nTe enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
 
-El monto de la deuda es: *${result.amount.toFixed(2)}* 
+            \nEl monto de la deuda es: *${result.amount.toFixed(2)}* 
 
-Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
+            \nPara tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
             //media: result.url
           }
         ]);
