@@ -117,7 +117,7 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           buttonList = "";
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList += `\n*${i+1}.* ${s.userId}`
+            buttonList += `\n*${index+1}.* ${serviceList[index].userId}`
           }
           // await flowDynamic(services);
           return await flowDynamic([
