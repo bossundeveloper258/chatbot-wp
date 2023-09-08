@@ -104,7 +104,7 @@ const flowPrincipal = addKeyword([
   )
   .addAnswer(
     "Por favor ingrese el número de *DNI* del titular del servicio",
-    { capture: false},
+    { capture: true},
     async (ctx, { flowDynamic, fallBack }) => {
       if (ctx.body.length != 8) return fallBack();
       else {
