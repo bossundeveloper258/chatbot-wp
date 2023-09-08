@@ -134,7 +134,7 @@ const flowPrincipal = addKeyword([
         const reporte = ctx.body;
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
-
+          console.log(buttonList , "####")
         }
       }
 );
@@ -147,7 +147,8 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer( [ "Selecciona el servicio" , buttonList], {capture: true},
+    .addAnswer("Selecciona el servicio")
+    .addAnswer( buttonList , {capture: true},
       async ( ctx, {}) => {
 
         if( ctx.body == "1" ){
