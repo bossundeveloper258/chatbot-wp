@@ -171,7 +171,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
       }
     )
     .addAnswer(
-      "",
+      "Espere porfavor para consultar su deuda",
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
         console.log( ctx.body )
