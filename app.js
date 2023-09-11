@@ -168,7 +168,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer( "Selecciona el servicio",
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
-        console.log( ctx.body )
+        console.log( typeof ctx.body )
         const index = ctx.boby;
         if ( !isNaN( index ) ) return fallBack('Debe ingresar una opcion valida numer');
         if( serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
