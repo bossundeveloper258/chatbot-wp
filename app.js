@@ -365,8 +365,6 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
     async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
       console.log(documentNumber , "documentNumber")
       console.log(userId , "userId")
-      
-      console.log(result);
 
       await flowDynamic([{ body: buttonList} ]);
       return await gotoFlow(flowConocerDeudaResult);
