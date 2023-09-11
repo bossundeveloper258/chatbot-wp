@@ -359,14 +359,13 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
 
 let media = null
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
-  .addAnswer(
-    'Consultando factura, espere un momento por favor',
+  .addAction(
     {capture: false},
     async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
       console.log(documentNumber , "documentNumber")
       console.log(userId , "userId")
 
-      await flowDynamic([{ body: buttonList} ]);
+      flowDynamic([{ body: buttonList} ]);
       return await gotoFlow(flowConocerDeudaResult);
       
     }
