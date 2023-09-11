@@ -2,7 +2,7 @@ const { createBot, createProvider, createFlow, addKeyword } = require('@bot-what
 const MetaProvider = require('@bot-whatsapp/provider/meta')
 const MockAdapter = require('@bot-whatsapp/database/mock');
 require('dotenv').config();
-
+const moment = require('moment');
 const { 
     reportarPago, 
     conocerMontodeuda, 
@@ -148,11 +148,17 @@ const flowPrincipal = addKeyword([
   .addAnswer(
       ["Por favor selecciona una de las opciones siguientes para tu atención"],
       { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
-      async ( ctx, { flowDynamic , gotoFlow }) => {
+      async ( ctx, { flowDynamic , gotoFlow , endFlow }) => {
         const reporte = ctx.body;
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
-          return await flowDynamic([{ body: buttonList} ]);
+
+          const result = await getLastInvoice(documentNumber);
+          if(result !== null){
+            return await flowDynamic([{ body: buttonList} ]);
+          }else{
+            return endFlow('No hay facturas pendientes de pago');
+          }
         }
       }
 );
@@ -168,10 +174,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer( "Selecciona el servicio",
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
-        console.log( typeof ctx.body )
-        console.log( isNaN( ctx.body ) )
-        console.log( Number.parseInt( ctx.body ) )
-        console.log( Number.parseInt( ctx.body ) - 1 )
+        
         if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
         if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
 
@@ -359,15 +362,33 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
     'Consultando factura, espere un momento por favor',
     {capture: false},
-    async (ctx, { flowDynamic, fallBack }) => {
+    async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
       console.log(documentNumber , "documentNumber")
       console.log(userId , "userId")
-      const result = await getLastInvoice(documentNumber);
+      
       console.log(result);
-      amount = result.amount;
-      media = result.media;
+
+      await flowDynamic([{ body: buttonList} ]);
+      return await gotoFlow(flowConocerDeudaResult);
+      
+    }
+  )
+
+const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
+  .addAnswer( "Selecciona el servicio",
+    {capture: true},
+    async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
+      
+      if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
+      if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
+
+      userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
+
+      const result = await getLastInvoice(documentNumber);
       if(result !== null){
-        await flowDynamic([              
+        amount = result.amount;
+        media = result.media;
+        await endFlow([              
           {
             body: `Hola *${userName}*
             \nTe enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
@@ -379,7 +400,7 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
           }
         ]);
       }else{
-        return fallBack('No hay facturas pendientes de pago');
+        return endFlow('No hay facturas pendientes de pago');
       }
     }
   )
