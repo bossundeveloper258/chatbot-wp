@@ -148,21 +148,22 @@ const flowPrincipal = addKeyword([
   .addAnswer(
       ["Por favor selecciona una de las opciones siguientes para tu atención"],
       { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
-      async ( ctx, { gotoFlow }) => {
+      async ( ctx, { flowDynamic , gotoFlow }) => {
         const reporte = ctx.body;
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
+          console.log( "retorno" )
           return await flowDynamic([{ body: buttonList} ]);
         }
       }
 );
 
-// const flowVerificarServicio = addKeyword('VERIFICAR_SERVICIOS')
-//   .addAction(
-//     async(ctx) => {
+const flowVerificarServicio = addKeyword('VERIFICAR_SERVICIOS')
+  .addAction(
+    async(ctx) => {
 
-//     }
-//   )
+    }
+  )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer( "Selecciona el servicio",
