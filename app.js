@@ -169,13 +169,13 @@ const flowOptionReportarPago = addKeyword( reportarPago )
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
         console.log( typeof ctx.body )
-        console.log( isNaN( ctx.boby ) )
-        console.log( Number.parseInt( ctx.boby ) )
-        console.log( Number.parseInt( ctx.boby ) - 1 )
-        if ( isNaN( ctx.boby ) ) return fallBack('Debe ingresar una opcion valida numer');
-        if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.boby ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
+        console.log( isNaN( ctx.body ) )
+        console.log( Number.parseInt( ctx.body ) )
+        console.log( Number.parseInt( ctx.body ) - 1 )
+        if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
+        if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
 
-        userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.boby ) - 1) ).userId;
+        userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
       }
     )
     .addAnswer(
