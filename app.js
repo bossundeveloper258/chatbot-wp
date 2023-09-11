@@ -171,11 +171,12 @@ const flowOptionReportarPago = addKeyword( reportarPago )
       }
     )
     .addAnswer(
-      "Espere porfavor para consultar su deuda",
+      buttonList,
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
         console.log( ctx.body )
         const index = ctx.boby;
+        console.log( serviceList );
         if (!isNaN(index)) return fallBack('Debe ingresar una opcion valida');
         if( serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida');
 
