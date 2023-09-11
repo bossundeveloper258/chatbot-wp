@@ -165,13 +165,12 @@ const flowPrincipal = addKeyword([
 //   )
 
 const flowOptionReportarPago = addKeyword( reportarPago )
-    .addAnswer("Selecciona el servicio", null,
+    .addAnswer("Selecciona el servicio", {capture: false},
       async ( ctx, {flowDynamic}) => {
         return await flowDynamic([{body: buttonList}]);
       }
     )
-    .addAnswer(
-      buttonList,
+    .addAction(
       {capture: true},
       async ( ctx, {flowDynamic , fallBack}) => {
         console.log( ctx.body )
