@@ -23,7 +23,7 @@ const {
 
 const  messages  = require("./config/messages");
 
-const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, getUserDetailByDocument } = require("./services/mikrowisp.service");
+const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, getUserDetailByDocument , postPaymentPromise} = require("./services/mikrowisp.service");
 
 /**
  * 
@@ -37,26 +37,44 @@ const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, g
 
 //Variables
 var userId;
-var userName;
 var documentNumber;
 var invoiceId;
 var paymentDate;
 var hourPayment;
 var transactionCode;
 var serviceId;
-var amount = 0;
+var amount;
 var file;
-var serviceList = [];
+var paymentMethodName;
 var buttonList = "";
 
-const postPaymentPromise = () => {
-  console.log(userId);
-  console.log(documentNumber);
-  console.log(paymentDate);
-  console.log(hourPayment);
-  console.log(transactionCode);
-  console.log(amount);
-  console.log(file);
+const savePaymentPromise = async() => {
+
+  let paymentDateString = paymentDate.toString().split('-');
+  let hourString = hourPayment.toString().split(':');
+  let dateFormat = paymentDateString[2] + "-" + paymentDateString[1] + "-" + paymentDateString[0] + "T" + hourString[0] + ":" + hourString[1] + ":00";
+
+  const formData = new FormData();
+  console.log('dateFormat', dateFormat);
+  formData.append('paymentPromiseId', '0');
+  formData.append('documentNumber', documentNumber.toString());
+  formData.append('attentionTypeName', attentionTypeName.toString());
+  formData.append('paymentMethodName', paymentMethodName.toString());
+  formData.append('amount', amount.toString());
+  formData.append('operationDate', dateFormat.toString());
+  formData.append('transactionCode', transactionCode.toString());
+  formData.append('invoiceId', '0');
+  formData.append('customerId', userId.toString());
+  formData.append('state', '8');
+  formData.append('registerUserId', '0');
+  formData.append('registerUserFullname', 'SYSTEM');
+
+  return await postPaymentPromise(formData).then((response) => {
+    return response.data;
+  }).catch((err) => {
+    console.log(err.message);
+  });
+
 };
 
 const getServiceByUser = async (documentNumber) => {
@@ -115,9 +133,9 @@ const flowPrincipal = addKeyword([
           serviceList = result;
           userId = result[0].userId;
           userName = result[0].name;
-          buttonList = [];
+          buttonList = "";
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList.push({body: `*${index+1}.* ${serviceList[index].userId}` })
+            buttonList += `*${index+1}.* ${serviceList[index].addressBilling}\n`
           }
           // await flowDynamic(services);
           return await flowDynamic([
@@ -149,24 +167,21 @@ const flowPrincipal = addKeyword([
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer("Selecciona el servicio", null,
       async ( ctx, {flowDynamic}) => {
-        return await flowDynamic( buttonList );
+        return await flowDynamic([{body: buttonList}]);
       }
     )
-    .addAction(
-      async ( ctx, {flowDynamic}) => {
+    .addAnswer(
+      "",
+      {capture: true},
+      async ( ctx, {flowDynamic , fallBack}) => {
         console.log( ctx.body )
+        const index = ctx.boby;
+        if (!isNaN(index)) return fallBack('Debe ingresar una opcion valida');
+        if( serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida');
+
+        userId = serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ).userId;
       }
     )
-    // .addAnswer( buttonList , {capture: true},
-    //   async ( ctx, {}) => {
-
-    //     if( ctx.body == "1" ){
-
-    //     }
-    //     console.log(ctx.body)        
-    //     console.log(ctx.from)
-    //   }
-    // )
     .addAnswer(
         [`Indicanos el medio de pago utilizado`],
         { buttons: [ { body: pagoYape},{ body: pagoBCP},{ body: pagoBANCONacion} ]},
@@ -204,21 +219,11 @@ const flowReportarPagoYape = addKeyword( pagoYape )
       }
     )
     .addAnswer(
-      messages.PAGO.FECHA,
-      { capture: true },
-      (ctx, { fallBack }) => {
-        if (ctx.body.length == 0) return fallBack();
-        else{
-          let validateDate = moment(ctx.body, 'DD-MM-YYYY HH:mm:ss', true).isValid();
-          if(!validateDate) return fallBack( messages.ERROR.FORMAT_DATE );
-        }
-      }
-    )
-    .addAnswer(
       messages.PAGO.OPERACION,
       { capture: true },
       (ctx, { fallBack }) => {
         if (ctx.body.length == 0) return fallBack();
+        else transactionCode = ctx.body;
       }
     )
     .addAnswer(
@@ -227,7 +232,7 @@ const flowReportarPagoYape = addKeyword( pagoYape )
       (ctx, { fallBack }) => {
         if (ctx.body.length == 0) return fallBack();
         else{
-          console.log(ctx.message.documentMessage);
+          file = ctx.message.documentMessage
         }
       }
     )

@@ -53,11 +53,22 @@ async function getLastInvoiceByCustomer(documentNumber, userId){
     })
 }
 
+async function postPaymentPromise (command) {
+    return await instaceMikrowisp.post('/payment-promises', command, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }}).then(response => {
+        const data = response.data;
+        return data;
+    });
+}
+
 module.exports = {
     getKeyword,
     getInformationTitular,
     getUserByDocument,
     getLastInvoiceByCustomer,
     getServiceByUserDocument,
-    getUserDetailByDocument
+    getUserDetailByDocument,
+    postPaymentPromise
 };
