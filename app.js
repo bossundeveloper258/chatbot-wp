@@ -152,7 +152,6 @@ const flowPrincipal = addKeyword([
         const reporte = ctx.body;
         if( reporte == reportarPago ){
           // await  gotoFlow( flowOptionReportarPago )
-          console.log( "retorno" )
           return await flowDynamic([{ body: buttonList} ]);
         }
       }
@@ -172,7 +171,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         console.log( ctx.body )
         const index = ctx.boby;
         console.log( serviceList );
-        if (!isNaN(index)) return fallBack('Debe ingresar una opcion valida');
+        if ( isNaN(index) ) return fallBack('Debe ingresar una opcion valida');
         if( serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida');
 
         userId = serviceList.find( (m , i) => i == (Number.parseInt(index) - 1) ).userId;
