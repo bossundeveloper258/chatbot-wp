@@ -376,12 +376,12 @@ const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
   .addAnswer( "Selecciona el servicio",
     {capture: true},
     async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
-      
+      console.log( "conocer dueda continua" )
       if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
       if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
 
       userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
-
+      await fallBack([ { body: "Espere unos momentos, que estamos consultando..." } ]);
       const result = await getLastInvoice(documentNumber);
       if(result !== null){
         amount = result.amount;
