@@ -359,20 +359,21 @@ const flowSeleccionBancoNacion = addKeyword( pagoBANCONacion )
 
 let media = null
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
-  .addAction(
+  .addAnswer(
+    "Selecciona el servicio",
     {capture: false},
     async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
       console.log(documentNumber , "documentNumber")
       console.log(userId , "userId")
 
-      flowDynamic([{ body: buttonList} ]);
-      return await gotoFlow(flowConocerDeudaResult);
+      await flowDynamic([{ body: buttonList} ]);
+      await gotoFlow(flowConocerDeudaResult);
       
     }
   )
 
 const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
-  .addAnswer( "Selecciona el servicio",
+  .addAnswer( "Espere unos momentos...",
     {capture: true},
     async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
       console.log( "conocer dueda continua" )
