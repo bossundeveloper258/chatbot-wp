@@ -135,7 +135,7 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           buttonList = "";
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList += `*${index+1}.* ${serviceList[index].addressBilling}\n`
+            buttonList += `*${index+1}.*${serviceList[index].userId} - ${serviceList[index].addressBilling}\n`
           }
           // await flowDynamic(services);
           return await flowDynamic([
@@ -153,12 +153,13 @@ const flowPrincipal = addKeyword([
         if( reporte == reportarPago || reporte == conocerMontodeuda){
           // await  gotoFlow( flowOptionReportarPago )
 
-          const result = await getLastInvoice(documentNumber);
-          if(result !== null){
-            return await flowDynamic([{ body: buttonList} ]);
-          }else{
-            return endFlow('No hay facturas pendientes de pago');
-          }
+          // const result = await getLastInvoice(documentNumber);
+          // if(result !== null){
+          //   return await flowDynamic([{ body: buttonList} ]);
+          // }else{
+          //   return endFlow('No hay facturas pendientes de pago');
+          // }
+          return await flowDynamic([{ body: buttonList} ]);
         }
       }
 );
@@ -173,12 +174,15 @@ const flowVerificarServicio = addKeyword('VERIFICAR_SERVICIOS')
 const flowOptionReportarPago = addKeyword( reportarPago )
     .addAnswer( "Selecciona el servicio",
       {capture: true},
-      async ( ctx, {flowDynamic , fallBack}) => {
+      async ( ctx, {flowDynamic , fallBack , endFlow}) => {
         
         if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
         if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
 
         userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
+
+        const result = await getLastInvoice(documentNumber);
+        if(result == null) return endFlow('No hay facturas pendientes de pago');
       }
     )
     .addAnswer(
