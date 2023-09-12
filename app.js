@@ -367,7 +367,7 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       console.log(userId , "userId")
 
       await flowDynamic([{ body: buttonList} ]);
-      delay
+      
       await gotoFlow(flowConocerDeudaResult);
       
     }
