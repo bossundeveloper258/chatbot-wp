@@ -368,12 +368,14 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
 
       userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
-      await fallBack([ { body: "Espere unos momentos, que estamos consultando..." } ]);
+      await flowDynamic([ { body: "Espere unos momentos, que estamos consultando..." } ]);
       const result = await getLastInvoice(documentNumber);
+      console.log( userId );
+      console.log( result )
       if(result !== null){
         amount = result.amount;
         media = result.media;
-        await fallBack([              
+        await flowDynamic([              
           {
             body: `Hola *${userName}*
             \nTe enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
