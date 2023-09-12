@@ -150,7 +150,7 @@ const flowPrincipal = addKeyword([
       { capture: true , buttons: [ { body: reportarPago},{ body: conocerMontodeuda}, { body: dondePagar} ]},
       async ( ctx, { flowDynamic , gotoFlow , endFlow }) => {
         const reporte = ctx.body;
-        if( reporte == reportarPago ){
+        if( reporte == reportarPago || reporte == conocerMontodeuda){
           // await  gotoFlow( flowOptionReportarPago )
 
           const result = await getLastInvoice(documentNumber);
@@ -361,22 +361,8 @@ let media = null
 const flowConocerDeuda = addKeyword( conocerMontodeuda )
   .addAnswer(
     "Selecciona el servicio",
-    {capture: false},
+    {capture: true},
     async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
-      console.log(documentNumber , "documentNumber")
-      console.log(userId , "userId")
-
-      await flowDynamic([{ body: buttonList} ]);
-      
-      await gotoFlow(flowConocerDeudaResult);
-      
-    }
-  )
-
-const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
-  .addAnswer( "Espere unos momentos...",
-    {capture: true , delay: 500},
-    async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
       console.log( "conocer dueda continua" )
       if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
       if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
@@ -387,20 +373,28 @@ const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
       if(result !== null){
         amount = result.amount;
         media = result.media;
-        await endFlow([              
+        await fallBack([              
           {
             body: `Hola *${userName}*
             \nTe enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
 
-            \nEl monto de la deuda es: *${result.amount.toFixed(2)}* 
-
-            \nPara tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*`,
+            \nEl monto de la deuda es: *${result.amount.toFixed(2)}*`,
             //media: result.url
           }
         ]);
+        return endFlow('Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*');
       }else{
         return endFlow('No hay facturas pendientes de pago');
       }
+      
+    }
+  )
+
+const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
+  .addAnswer( "Espere unos momentos...",
+    {capture: true , delay: 500},
+    async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
+      
     }
   )
 
