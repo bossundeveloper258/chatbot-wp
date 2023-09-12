@@ -182,6 +182,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
 
         const result = await getLastInvoice(documentNumber);
+        console.log( result , "getLastInvoice reportarPago" )
         if(result == null) return flowDynamic([{body: 'No hay facturas pendientes de pago'}]);
       }
     )
@@ -388,9 +389,9 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
             //media: result.url
           }
         ]);
-        return endFlow('Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*');
+        return flowDynamic('Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*');
       }else{
-        return endFlow('No hay facturas pendientes de pago');
+        return flowDynamic('No hay facturas pendientes de pago');
       }
       
     }
