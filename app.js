@@ -117,6 +117,7 @@ const flowPrincipal = addKeyword([
     "Buenos dias",
     "Buenas tardes",
     "Buenas noches",
+    "⬅️ Volver al Inicio"
   ])
   .addAnswer(
     "Gracias por comunicarte con el área de facturación de *AIRWIZ PERÚ*"
@@ -183,7 +184,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
 
         const result = await getLastInvoice(documentNumber);
         console.log( result , "getLastInvoice reportarPago" )
-        if(result == null) return flowDynamic([{body: 'No hay facturas pendientes de pago'}]);
+        if(result == null) endFlow([ { body: 'No hay facturas pendientes de pago', buttons:[{body:'⬅️ Volver al Inicio' }] }]);
       }
     )
     .addAnswer(
@@ -391,7 +392,8 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
         ]);
         return flowDynamic('Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*');
       }else{
-        return flowDynamic('No hay facturas pendientes de pago');
+        ''
+        return endFlow([ { body: 'No hay facturas pendientes de pago', buttons:[{body:'⬅️ Volver al Inicio' }] }]);
       }
       
     }
