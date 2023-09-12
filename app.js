@@ -367,6 +367,7 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       console.log(userId , "userId")
 
       await flowDynamic([{ body: buttonList} ]);
+      delay
       await gotoFlow(flowConocerDeudaResult);
       
     }
@@ -374,7 +375,7 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
 
 const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
   .addAnswer( "Espere unos momentos...",
-    {capture: true},
+    {capture: true , delay: 500},
     async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
       console.log( "conocer dueda continua" )
       if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
