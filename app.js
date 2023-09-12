@@ -135,7 +135,7 @@ const flowPrincipal = addKeyword([
           userName = result[0].name;
           buttonList = "";
           for (let index = 0; index < serviceList.length; index++) {
-            buttonList += `*${index+1}.*${serviceList[index].userId} - ${serviceList[index].addressBilling}\n`
+            buttonList += `*${index+1}.* ${serviceList[index].userId} - ${serviceList[index].addressBilling}\n`
           }
           // await flowDynamic(services);
           return await flowDynamic([
@@ -182,7 +182,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
         userId = serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ).userId;
 
         const result = await getLastInvoice(documentNumber);
-        if(result == null) return endFlow('No hay facturas pendientes de pago');
+        if(result == null) return flowDynamic([{body: 'No hay facturas pendientes de pago'}]);
       }
     )
     .addAnswer(
@@ -392,14 +392,6 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
       }else{
         return endFlow('No hay facturas pendientes de pago');
       }
-      
-    }
-  )
-
-const flowConocerDeudaResult = addKeyword('CONOCER_DEUDA_RESULTADO')
-  .addAnswer( "Espere unos momentos...",
-    {capture: true , delay: 500},
-    async ( ctx, {flowDynamic , fallBack, gotoFlow , endFlow}) => {
       
     }
   )
