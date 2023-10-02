@@ -555,6 +555,7 @@ const main = async () => {
     const adapterDB = new MockAdapter()
     const adapterFlow = createFlow(
         [
+            flowWelcome,
             flowPrincipal,
 
             flowOptionReportarPago,
