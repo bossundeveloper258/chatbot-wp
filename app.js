@@ -129,7 +129,7 @@ const getUser = async (documentNumber) => {
 const flowWelcome = addKeyword(EVENTS.WELCOME)
   .addAnswer(`Disculpa, no logro comprender
   \n⚙️ Si tienes dudas sobre mi funcionamiento puedes ir al *Menú principal*`,
-  {buttons: [{ body: 'Menú principal 🖥️' }]} );
+  {buttons: [{ body: "Menú principal" }]} );
   
 const flowPrincipal = addKeyword([
     "hola"
@@ -190,11 +190,9 @@ const flowPrincipal = addKeyword([
       }
 );
 
-const flowListaOpciones = addKeyword('Menú principal 🖥️')
-  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú 😄.",
-    {
-        capture: true
-    },
+const flowListaOpciones = addKeyword(["Menú principal"])
+  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú.",
+    {capture: true},
     async(ctx , {provider}) => {
       console.log( ctx.from )
       const headerText = 'HEADER_TEXT'
