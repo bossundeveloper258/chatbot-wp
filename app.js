@@ -196,9 +196,9 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
         capture: true
     },
     async(ctx , {provider}) => {
-      const headerText = ''
-      const bodyText = ''
-      const footerText = ''
+      const headerText = 's'
+      const bodyText = 's'
+      const footerText = 's'
       const buttonList = 'Opciones'
       const listParams = [
           {
@@ -207,17 +207,17 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
                   {
                       id: reportarPago,
                       title: 'Reportar Pago',
-                      description: ''
+                      description: 's'
                   },
                   {
                       id: conocerMontodeuda,
                       title: 'Conocer Deuda',
-                      description: ''
+                      description: 's'
                   },
                   {
                       id: dondePagar,
                       title: 'Donde Pagar',
-                      description: ''
+                      description: 's'
                   }
               ]
           }
