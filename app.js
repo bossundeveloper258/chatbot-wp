@@ -263,10 +263,10 @@ const flowConocerDeuda = addKeyword( CONOCER_DUEDA )
         console.log( "CONOCER_DUEDA" )
         if( isUserActive() ){
           console.log( "1" )
-          await gotoFlow(flowVerificarUsuarioTRUE);
+          return await gotoFlow(flowVerificarUsuarioTRUE);
         }else{
           console.log( "2" )
-          await gotoFlow(flowVerificarUsuarioFALSE);
+          return await gotoFlow(flowVerificarUsuarioFALSE);
         }
         console.log( "3" )
         // console.log( "conocer dueda continua" )
