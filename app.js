@@ -125,11 +125,11 @@ const getUser = async (documentNumber) => {
  *
  *
 */
-
+// {buttons: [{ body: 'Menú principal 🖥️' }]}
 const flowWelcome = addKeyword(EVENTS.WELCOME)
   .addAnswer(`Disculpa, no logro comprender
   \n⚙️ Si tienes dudas sobre mi funcionamiento puedes ir al *Menú principal*`,
-  {buttons: [{ body: 'Menú principal 🖥️' }]}, (ctx, {gotoFlow}) => {
+  null, (ctx, {gotoFlow}) => {
     gotoFlow(flowListaOpciones);
   } );
   
