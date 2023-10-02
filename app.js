@@ -191,12 +191,12 @@ const flowPrincipal = addKeyword([
 );
 
 const flowListaOpciones = addKeyword('Menú principal 🖥️')
-  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú. 😄",
+  .addAction(
     null,
     async(ctx , {provider}) => {
       console.log( "#########" )
       const headerText = ''
-      const bodyText = ''
+      const bodyText = 'Puedes seleccionar una de las *siguientes opciones* del menú. 😄'
       const footerText = ''
       const buttonList = 'Opciones'
       const listParams = [
