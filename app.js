@@ -194,6 +194,7 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
   .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú. 😄",
     null,
     async(ctx , {provider}) => {
+      console.log( "#########" )
       const headerText = ''
       const bodyText = ''
       const footerText = ''
@@ -203,17 +204,17 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
               title: '',
               rows: [
                   {
-                      id: reportarPago,
+                      id: "ID_1",
                       title: 'Reportar Pago',
                       description: ''
                   },
                   {
-                      id: conocerMontodeuda,
+                      id: "ID_2",
                       title: 'Conocer Deuda',
                       description: ''
                   },
                   {
-                      id: dondePagar,
+                      id: "ID_3",
                       title: 'Donde Pagar',
                       description: ''
                   }
