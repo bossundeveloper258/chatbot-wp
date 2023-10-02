@@ -129,12 +129,10 @@ const getUser = async (documentNumber) => {
 const flowWelcome = addKeyword(EVENTS.WELCOME)
   .addAnswer(`Disculpa, no logro comprender
   \n⚙️ Si tienes dudas sobre mi funcionamiento puedes ir al *Menú principal*`,
-  null, (ctx, {gotoFlow}) => {
-    gotoFlow(flowListaOpciones);
-  } );
+  {buttons: [{ body: 'Menú principal 🖥️' }]} );
   
 const flowPrincipal = addKeyword([
-    "Menú principal 🖥️"
+    "hola"
   ])
   .addAnswer(
     "Gracias por comunicarte con el área de facturación de *AIRWIZ PERÚ*",
@@ -192,9 +190,8 @@ const flowPrincipal = addKeyword([
       }
 );
 
-const flowListaOpciones = addKeyword('LISTAR_OPCIONES')
-  .addAnswer(
-    'Puedes seleccionar una de las *siguientes opciones* del menú. 😄',
+const flowListaOpciones = addKeyword('Menú principal 🖥️')
+  .addAction(
     {
         capture: true
     },
