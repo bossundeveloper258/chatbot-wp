@@ -260,12 +260,15 @@ const flowConocerDeuda = addKeyword( CONOCER_DUEDA )
       null,
       async (ctx, { flowDynamic, fallBack , endFlow , gotoFlow}) => {
         optionId = 2;
+        console.log( "CONOCER_DUEDA" )
         if( isUserActive() ){
+          console.log( "1" )
           await gotoFlow(flowVerificarUsuarioTRUE);
         }else{
+          console.log( "2" )
           await gotoFlow(flowVerificarUsuarioFALSE);
         }
-
+        console.log( "3" )
         // console.log( "conocer dueda continua" )
         // if ( isNaN( ctx.body ) ) return fallBack('Debe ingresar una opcion valida numer');
         // if( serviceList.find( (m , i) => i == (Number.parseInt( ctx.body ) - 1) ) == null ) return fallBack('Debe ingresar una opcion valida array');
