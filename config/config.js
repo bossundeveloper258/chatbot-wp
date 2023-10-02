@@ -1,6 +1,6 @@
-const reportarPago = 'REPORTAR PAGO';
-const conocerMontodeuda = 'CONOCER DUEDA';
-const dondePagar = 'DONDE PAGAR';
+const reportarPago = 'REPORTAR_PAGO';
+const conocerMontodeuda = 'CONOCER_DUEDA';
+const dondePagar = 'DONDE_PAGAR';
 
 const pagoYape = 'PAGO YAPE';
 const pagoBCP = 'PAGO BCP';
