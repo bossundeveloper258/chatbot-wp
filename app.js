@@ -196,28 +196,49 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
         capture: true
     },
     async(ctx , {provider}) => {
-      const headerText = ''
-      const bodyText = ''
-      const footerText = ''
-      const buttonList = 'Opciones'
+      console.log( ctx.from )
+      const headerText = 'HEADER_TEXT'
+      const bodyText = 'BODY_TEXT'
+      const footerText = 'FOOTER_TEXT'
+      const buttonList = 'BUTTON_LIST'
       const listParams = [
           {
-              title: '',
+              title: 'TITLE_1',
               rows: [
                   {
                       id: 'ID_1',
-                      title: 'DDDD',
-                      description: ''
+                      title: 'TITLE_1',
+                      description: 'DESCRIPTION_1'
                   },
                   {
                       id: 'ID_2',
-                      title: 'DDDD',
-                      description: ''
+                      title: 'TITLE_2',
+                      description: 'DESCRIPTION_2'
                   },
                   {
                       id: 'ID_3',
-                      title: 'DDDD',
-                      description: ''
+                      title: 'TITLE_3',
+                      description: 'DESCRIPTION_3'
+                  }
+              ]
+          },
+          {
+              title: 'TITLE_2',
+              rows: [
+                  {
+                      id: 'ID_1',
+                      title: 'TITLE_1',
+                      description: 'DESCRIPTION_1'
+                  },
+                  {
+                      id: 'ID_2',
+                      title: 'TITLE_2',
+                      description: 'DESCRIPTION_2'
+                  },
+                  {
+                      id: 'ID_3',
+                      title: 'TITLE_3',
+                      description: 'DESCRIPTION_3'
                   }
               ]
           }
