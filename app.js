@@ -191,7 +191,7 @@ const flowPrincipal = addKeyword([
 );
 
 const flowListaOpciones = addKeyword('Menú principal 🖥️')
-  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú. 😄",
+  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú 😄.",
     {
         capture: true
     },
@@ -206,17 +206,17 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
               rows: [
                   {
                       id: 'ID_1',
-                      title: reportarPago,
+                      title: 'DDDD',
                       description: ''
                   },
                   {
                       id: 'ID_2',
-                      title: reportarPago,
+                      title: 'DDDD',
                       description: ''
                   },
                   {
                       id: 'ID_3',
-                      title: dondePagar,
+                      title: 'DDDD',
                       description: ''
                   }
               ]
