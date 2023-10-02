@@ -129,7 +129,7 @@ const getUser = async (documentNumber) => {
 const flowWelcome = addKeyword(EVENTS.WELCOME)
   .addAnswer(`Disculpa, no logro comprender
   \n⚙️ Si tienes dudas sobre mi funcionamiento puedes ir al *Menú principal*`,
-  {buttons: [{ body: "Menú principal" }]} );
+  {buttons: [{ body: 'Menú principal 🖥️' }]} );
   
 const flowPrincipal = addKeyword([
     "hola"
@@ -190,53 +190,32 @@ const flowPrincipal = addKeyword([
       }
 );
 
-const flowListaOpciones = addKeyword(["Menú principal"])
-  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú.",
-    {capture: true},
+const flowListaOpciones = addKeyword('Menú principal 🖥️')
+  .addAnswer("Puedes seleccionar una de las *siguientes opciones* del menú. 😄",
+    null,
     async(ctx , {provider}) => {
-      console.log( ctx.from )
-      const headerText = 'HEADER_TEXT'
-      const bodyText = 'BODY_TEXT'
-      const footerText = 'FOOTER_TEXT'
-      const buttonList = 'BUTTON_LIST'
+      const headerText = ''
+      const bodyText = ''
+      const footerText = ''
+      const buttonList = 'Opciones'
       const listParams = [
           {
-              title: 'TITLE_1',
+              title: '',
               rows: [
                   {
-                      id: 'ID_1',
-                      title: 'TITLE_1',
-                      description: 'DESCRIPTION_1'
+                      id: reportarPago,
+                      title: 'Reportar Pago',
+                      description: ''
                   },
                   {
-                      id: 'ID_2',
-                      title: 'TITLE_2',
-                      description: 'DESCRIPTION_2'
+                      id: conocerMontodeuda,
+                      title: 'Conocer Deuda',
+                      description: ''
                   },
                   {
-                      id: 'ID_3',
-                      title: 'TITLE_3',
-                      description: 'DESCRIPTION_3'
-                  }
-              ]
-          },
-          {
-              title: 'TITLE_2',
-              rows: [
-                  {
-                      id: 'ID_1',
-                      title: 'TITLE_1',
-                      description: 'DESCRIPTION_1'
-                  },
-                  {
-                      id: 'ID_2',
-                      title: 'TITLE_2',
-                      description: 'DESCRIPTION_2'
-                  },
-                  {
-                      id: 'ID_3',
-                      title: 'TITLE_3',
-                      description: 'DESCRIPTION_3'
+                      id: dondePagar,
+                      title: 'Donde Pagar',
+                      description: ''
                   }
               ]
           }
