@@ -35,9 +35,13 @@ const { getUserByDocument, getLastInvoiceByCustomer, getServiceByUserDocument, g
  */
 
 
-//Variables
+// Variables Globales
 var userId;
 var documentNumber;
+var userName;
+
+
+
 var invoiceId;
 var paymentDate;
 var hourPayment;
@@ -50,30 +54,41 @@ var buttonList = "";
 
 const savePaymentPromise = async() => {
 
-  let paymentDateString = paymentDate.toString().split('-');
-  let hourString = hourPayment.toString().split(':');
-  let dateFormat = paymentDateString[2] + "-" + paymentDateString[1] + "-" + paymentDateString[0] + "T" + hourString[0] + ":" + hourString[1] + ":00";
+  let paymentDateString = paymentDate.toString().split("-");
+  let hourString = hourPayment.toString().split(":");
+  let dateFormat =
+    paymentDateString[2] +
+    "-" +
+    paymentDateString[1] +
+    "-" +
+    paymentDateString[0] +
+    "T" +
+    hourString[0] +
+    ":" +
+    hourString[1] +
+    ":00";
 
   const formData = new FormData();
-  console.log('dateFormat', dateFormat);
-  formData.append('paymentPromiseId', '0');
-  formData.append('documentNumber', documentNumber.toString());
-  formData.append('attentionTypeName', attentionTypeName.toString());
-  formData.append('paymentMethodName', paymentMethodName.toString());
-  formData.append('amount', amount.toString());
-  formData.append('operationDate', dateFormat.toString());
-  formData.append('transactionCode', transactionCode.toString());
-  formData.append('invoiceId', '0');
-  formData.append('customerId', userId.toString());
-  formData.append('state', '8');
-  formData.append('registerUserId', '0');
-  formData.append('registerUserFullname', 'SYSTEM');
+  formData.append("paymentPromiseId", "0");
+  formData.append("documentNumber", documentNumber.toString());
+  formData.append("attentionTypeName", attentionTypeName.toString());
+  formData.append("paymentMethodName", paymentMethodName.toString());
+  formData.append("amount", amount.toString());
+  formData.append("operationDate", dateFormat.toString());
+  formData.append("transactionCode", transactionCode.toString());
+  formData.append("invoiceId", "0");
+  formData.append("customerId", userId.toString());
+  formData.append("state", "8");
+  formData.append("registerUserId", "0");
+  formData.append("registerUserFullname", "SYSTEM");
 
-  return await postPaymentPromise(formData).then((response) => {
-    return response.data;
-  }).catch((err) => {
-    console.log(err.message);
-  });
+  /*return await postPaymentPromise(formData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });*/
 
 };
 
@@ -90,7 +105,6 @@ const getUserDetail = async (documentNumber) => {
 };
 
 const getLastInvoice = async (documentNumber) => {
-  console.log(userId , "---")
   return await getLastInvoiceByCustomer(documentNumber, userId).then((response) => {
       return response.data;
   });
@@ -111,16 +125,29 @@ const getUser = async (documentNumber) => {
  *
  *
 */
+
+const flowWelcome = addKeyword(EVENTS.WELCOME)
+  .addAnswer(`Disculpa, no logro comprender
+  \n⚙️ Si tienes dudas sobre mi funcionamiento puedes ir al *Menú principal*`,
+  {buttons: [{ body: 'Menú principal 🖥️' }]}, (ctx, {gotoFlow}) => {
+    gotoFlow(flowListaOpciones);
+  } );
   
 const flowPrincipal = addKeyword([
-    "Hola",
-    "Buenos dias",
-    "Buenas tardes",
-    "Buenas noches",
-    "⬅️ Volver al Inicio"
+    "Menú principal 🖥️"
   ])
   .addAnswer(
-    "Gracias por comunicarte con el área de facturación de *AIRWIZ PERÚ*"
+    "Gracias por comunicarte con el área de facturación de *AIRWIZ PERÚ*",
+    { capture: false} ,
+    async (ctx, { flowDynamic, fallBack , gotoFlow}) => {
+      if( documentNumber != null ){
+        return await flowDynamic([
+          { body: `Hola *${userName}*` }
+        ])
+      }else{
+
+      }
+    }
   )
   .addAnswer(
     "Por favor ingrese el número de *DNI* del titular del servicio",
@@ -165,10 +192,56 @@ const flowPrincipal = addKeyword([
       }
 );
 
-const flowVerificarServicio = addKeyword('VERIFICAR_SERVICIOS')
+const flowListaOpciones = addKeyword('LISTAR_OPCIONES')
   .addAction(
-    async(ctx) => {
-
+    async(ctx , {provider}) => {
+      const headerText = 'HEADER_TEXT'
+      const bodyText = 'BODY_TEXT'
+      const footerText = 'FOOTER_TEXT'
+      const buttonList = 'BUTTON_LIST'
+      const listParams = [
+          {
+              title: 'TITLE_1',
+              rows: [
+                  {
+                      id: 'ID_1',
+                      title: 'TITLE_1',
+                      description: 'DESCRIPTION_1'
+                  },
+                  {
+                      id: 'ID_2',
+                      title: 'TITLE_2',
+                      description: 'DESCRIPTION_2'
+                  },
+                  {
+                      id: 'ID_3',
+                      title: 'TITLE_3',
+                      description: 'DESCRIPTION_3'
+                  }
+              ]
+          },
+          {
+              title: 'TITLE_2',
+              rows: [
+                  {
+                      id: 'ID_1',
+                      title: 'TITLE_1',
+                      description: 'DESCRIPTION_1'
+                  },
+                  {
+                      id: 'ID_2',
+                      title: 'TITLE_2',
+                      description: 'DESCRIPTION_2'
+                  },
+                  {
+                      id: 'ID_3',
+                      title: 'TITLE_3',
+                      description: 'DESCRIPTION_3'
+                  }
+              ]
+          }
+      ]
+      await provider.sendList(ctx.from, headerText, bodyText, footerText, buttonList ,listParams)
     }
   )
 
@@ -184,7 +257,7 @@ const flowOptionReportarPago = addKeyword( reportarPago )
 
         const result = await getLastInvoice(documentNumber);
         console.log( result , "getLastInvoice reportarPago" )
-        if(result == null) endFlow([ { body: 'No hay facturas pendientes de pago', buttons:[{body:'⬅️ Volver al Inicio' }] }]);
+        if(result == null) return await flowDynamic([ { body: 'No hay facturas pendientes de pago', buttons:[{body:'⬅️ Volver al Inicio' }] }]);
       }
     )
     .addAnswer(
@@ -385,9 +458,8 @@ const flowConocerDeuda = addKeyword( conocerMontodeuda )
           {
             body: `Hola *${userName}*
             \nTe enviamos al correo el último estado de cuenta , si aún no lo viste te compartimos los detalles 👇🏼:
-
             \nEl monto de la deuda es: *${result.amount.toFixed(2)}*`,
-            //media: result.url
+            media: "http://internaldb.airwiz.com.pe/mikrowisp/invoices/external-last-invoice/" + result.url
           }
         ]);
         return flowDynamic('Para tu tranquilidad, paga de forma inmediata y segura desde nuestra *WEB*');
