@@ -1,6 +1,6 @@
-const reportarPago = 'ID_1';
-const conocerMontodeuda = 'Conocer Deuda';
-const dondePagar = 'Donde Pagar';
+const REPORTAR_PAGO = 'REPORTAR_PAGO';
+const CONOCER_DUEDA = 'CONOCER_DUEDA';
+const dondePagar = 'DONDE_PAGAR';
 
 const pagoYape = 'PAGO YAPE';
 const pagoBCP = 'PAGO BCP';
@@ -20,10 +20,14 @@ const BCPAPP = 'APP MOVIL';
 const BCPWEB = 'WEB';
 const BCPTELECREDITO = 'TELECREDITO';
 
+const MAIN_MENU = "MAIN_MENU";
+
 module.exports = { 
-    reportarPago , 
-    conocerMontodeuda, 
+    REPORTAR_PAGO , 
+    CONOCER_DUEDA, 
     dondePagar,
+
+    MAIN_MENU,
 
     pagoYape, 
     pagoBCP, 
