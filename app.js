@@ -191,7 +191,7 @@ const flowPrincipal = addKeyword([
 );
 
 const flowListaOpciones = addKeyword('Menú principal 🖥️')
-  .addAction(
+  .addAnswer( "",
     null,
     async(ctx , {provider}) => {
       console.log( "#########" )
@@ -204,7 +204,7 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
               title: '',
               rows: [
                   {
-                      id: "ID_1",
+                      id: reportarPago,
                       title: 'Reportar Pago',
                       description: ''
                   },

@@ -1,4 +1,4 @@
-const reportarPago = 'Reportar Pago';
+const reportarPago = 'ID_1';
 const conocerMontodeuda = 'Conocer Deuda';
 const dondePagar = 'Donde Pagar';
 
