@@ -196,28 +196,28 @@ const flowListaOpciones = addKeyword('Menú principal 🖥️')
         capture: true
     },
     async(ctx , {provider}) => {
-      const headerText = 's'
-      const bodyText = 's'
-      const footerText = 's'
+      const headerText = ''
+      const bodyText = ''
+      const footerText = ''
       const buttonList = 'Opciones'
       const listParams = [
           {
               title: '',
               rows: [
                   {
-                      id: reportarPago,
-                      title: 'Reportar Pago',
-                      description: 's'
+                      id: 'ID_1',
+                      title: reportarPago,
+                      description: ''
                   },
                   {
-                      id: conocerMontodeuda,
-                      title: 'Conocer Deuda',
-                      description: 's'
+                      id: 'ID_2',
+                      title: reportarPago,
+                      description: ''
                   },
                   {
-                      id: dondePagar,
-                      title: 'Donde Pagar',
-                      description: 's'
+                      id: 'ID_3',
+                      title: dondePagar,
+                      description: ''
                   }
               ]
           }
