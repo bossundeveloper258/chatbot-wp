@@ -193,7 +193,11 @@ const flowPrincipal = addKeyword([
 );
 
 const flowListaOpciones = addKeyword('LISTAR_OPCIONES')
-  .addAction(
+  .addAnswer(
+    'Puedes seleccionar una de las *siguientes opciones* del menú. 😄',
+    {
+        capture: true
+    },
     async(ctx , {provider}) => {
       const headerText = 'HEADER_TEXT'
       const bodyText = 'BODY_TEXT'
@@ -557,6 +561,7 @@ const main = async () => {
         [
             flowWelcome,
             flowPrincipal,
+            flowListaOpciones,
 
             flowOptionReportarPago,
 
